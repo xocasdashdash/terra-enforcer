@@ -8,7 +8,7 @@ letter              =   asci_letter | "_"
 word                =   (letter){letter|digit}
 
 WithStatement       =   "with" ("ALL"   |   "NONE"  |   "SOME"  |   "ONLY")    .
-IDStatement         =   word    { "."   word   }
+IDStatement         =   word  { "."   word   }
 ValueStatement      =   "[" { word "," } word . "]"
 AttributeStatement  =   "attribute" IDStatement WithStatement   ValueStatement
 BlockStatement      =   "{" (AttributeStatement){"," AttributeStatement } "}"
