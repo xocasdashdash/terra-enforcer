@@ -1,3 +1,3 @@
-resource "aws_instance" has {
-    attribute "instance_type" with ANY of ["t2.micro",t2.medium]
+resource "a" has {
+    attribute "b" with ANY of ["c","d"]
 }

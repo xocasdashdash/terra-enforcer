@@ -21,12 +21,15 @@ func (p Position) String() string {
 
 type AST Node
 
+type IDNode struct {
+	Position
+	ID string
+}
 type IDStatement struct {
 	Position
-	ID []string
+	IDs []IDNode
 }
-
-type WithStatement struct {
+type WithNode struct {
 	Position
 	condition string
 }
@@ -35,24 +38,20 @@ type ProgramNode struct {
 
 	ResourceStatements []ResourceNode
 }
-type Value struct {
-	Position
-}
-
-type ValueStatement struct {
+type ValueNode struct {
 	Position
 	Value string
 }
 
 type AttributeNode struct {
 	Position
-	ID    IDStatement
-	With  WithStatement
-	Value []ValueStatement
+	ID    IDNode
+	With  WithNode
+	Value []ValueNode
 }
 
 type ResourceNode struct {
 	Position
-	ID             IDStatement
-	BlockStatement []AttributeNode
+	ID         IDNode
+	Attributes []AttributeNode
 }

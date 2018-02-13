@@ -8,18 +8,20 @@ import (
 )
 
 // Token defines a single TFEN token which can be obtained via the Scanner
-
 type Token struct {
 	Pos   Position
 	Type  TokenType
 	Value string
 }
+
+//TokenType The type we're gonna be using instead of an int
 type TokenType int
 
 const (
-	// Special tokens
+	//Special tokens
 	TokenError TokenType = iota
-	TokenEOF
+	TokenEOF             //
+
 	TokenComment
 
 	identifier_beg
@@ -67,7 +69,7 @@ func (tt TokenType) String() string {
 	case TokenError:
 		return "error"
 	case TokenQuote:
-		return "\"a"
+		return "\""
 	case TokenEOF:
 		return "eof"
 	case TokenComment:
@@ -285,7 +287,8 @@ func lexWordOrKeyword(l *lexer) stateFn {
 			// absorb
 		default:
 			l.backup()
-			if typ, ok := keywords[l.current()]; ok {
+			current := l.current()
+			if typ, ok := keywords[current]; ok {
 				l.emit(typ)
 				return lexToken
 			}
