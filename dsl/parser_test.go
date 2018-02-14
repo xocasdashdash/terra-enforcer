@@ -1,6 +1,7 @@
 package dsl_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"testing"
@@ -15,6 +16,8 @@ func TestParser(t *testing.T) {
 		t.Errorf("error should be nil %#v", err)
 		t.FailNow()
 	}
+	b, _ := json.MarshalIndent(ast, "", "  ")
+	fmt.Printf("%s\n", string(b))
 	pn, ok := ast.(dsl.ProgramNode)
 	if !ok {
 		t.Errorf("error casting the ast to a program")

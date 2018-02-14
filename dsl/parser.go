@@ -92,6 +92,7 @@ func (p *parser) unexpected(tok Token, expected ...TokenType) {
 		expectedStrs[i] = fmt.Sprintf("%q", expected[i])
 	}
 	expectedStr := strings.Join(expectedStrs, ",")
+	debug.PrintStack()
 	p.errorf("unexpected token %q with value %q at line %d char %d, expected: %s", tok.Type, tok.Value, tok.Pos.Line, tok.Pos.Char, expectedStr)
 }
 
@@ -121,8 +122,8 @@ func (p *parser) program() *ProgramNode {
 		case TokenEOF:
 			return prog
 		case TokenResource:
-			resources := p.resourceStatement()
-			prog.ResourceStatements = append(prog.ResourceStatements, resources)
+			resource := p.resourceStatement()
+			prog.ResourceStatements = append(prog.ResourceStatements, resource)
 		default:
 			p.unexpected(p.next(), TokenEOF, TokenResource)
 		}
@@ -130,20 +131,31 @@ func (p *parser) program() *ProgramNode {
 }
 func (p *parser) resourceStatement() ResourceNode {
 	r := ResourceNode{}
+	resourceToken := p.expect(TokenResource)
+	r.Position = resourceToken.Pos
+	idToken := p.expect(TokenString)
+	r.ID = IDNode{
+		ID:       idToken.Value,
+		Position: idToken.Pos,
+	}
+	p.expect(TokenHas)
 	for {
-		switch p.peek().Type {
-		case TokenResource, TokenHas, TokenComma:
+		pToken := p.peek()
+		switch pToken.Type {
+		case TokenAttribute:
+			r.Attributes = append(r.Attributes, p.attributeStatement())
+		case TokenComma:
 			p.next()
-		case TokenIdent, TokenString:
+		case TokenString:
 			r.ID = *p.idStatement()
 		case TokenLBrace:
 			p.next()
-			r.Attributes = append(r.Attributes, p.attributeStatement())
-		case TokenRBracket:
+
+		case TokenRBrace:
 			p.next()
 			return r
 		default:
-			p.unexpected(p.next(), TokenResource, TokenHas, TokenComma, TokenIdent, TokenLBrace, TokenRBrace)
+			p.unexpected(p.next(), TokenComma, TokenLBrace, TokenRBrace)
 		}
 	}
 }
@@ -156,7 +168,7 @@ func (p *parser) idStatement() *IDNode {
 	}
 }
 func (p *parser) valueStatement() []ValueNode {
-	res := make([]ValueNode, 5)
+	var res []ValueNode
 	for {
 		switch p.peek().Type {
 		case TokenLBracket:
@@ -166,14 +178,16 @@ func (p *parser) valueStatement() []ValueNode {
 			return res
 		case TokenComma:
 			p.next()
-		case TokenIdent:
+		case TokenString:
 			tok := p.next()
-			res = append(res, ValueNode{
-				Position: tok.Pos,
-				Value:    tok.Value,
-			})
+			if tok.Value != "" {
+				res = append(res, ValueNode{
+					Position: tok.Pos,
+					Value:    tok.Value,
+				})
+			}
 		default:
-			p.unexpected(p.next(), TokenLBracket, TokenIdent, TokenComma, TokenRBracket)
+			p.unexpected(p.next(), TokenLBracket, TokenString, TokenComma, TokenRBracket)
 		}
 	}
 }
@@ -185,7 +199,8 @@ func (p *parser) attributeStatement() AttributeNode {
 	p.expect(TokenOf)
 	p.expect(TokenLBracket)
 	withNode := WithNode{
-		condition: withCondition.Value,
+		Condition: withCondition.Value,
+		Position:  withCondition.Pos,
 	}
 	return AttributeNode{
 		Position: idNode.Pos(),

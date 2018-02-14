@@ -25,7 +25,6 @@ const (
 	TokenComment
 
 	identifier_beg
-	TokenIdent     // literals
 	TokenResource  // resource ""
 	TokenAttribute // attribute ""
 	TokenHas       // has
@@ -74,8 +73,6 @@ func (tt TokenType) String() string {
 		return "eof"
 	case TokenComment:
 		return "comment"
-	case TokenIdent:
-		return "identifier"
 	case TokenResource:
 		return "resource"
 	case TokenAttribute:
@@ -103,7 +100,7 @@ func (tt TokenType) String() string {
 	case TokenRBracket:
 		return "']'"
 	case TokenRBrace:
-		return "]"
+		return "}"
 	case TokenEqual:
 		return "=="
 	case TokenRegex:

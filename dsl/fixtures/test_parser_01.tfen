@@ -1,7 +1,41 @@
 resource "a" has {
-    attribute "b" with ANY of ["c","d"]
+    attribute "b" with ANY of [c,,,,e,d],
+    attribute "b" with ANY of [c,,,,e,d],
+    attribute "b" with ANY of [c,,,,e,d],
+    attribute "b" with ANY of [c,,,,e,d],
+    attribute "b" with ANY of [c,,,,e,d]
+
+
+
+
 }
 
-resource "aws_instance_2" has {
-    attribute "instance_type" with ANY of ["t2.micro",t2.medium]
+resource "a" has {
+    attribute "b" with ANY of [c,,,,e,d],
+
+
+    attribute "b" with SOME of [zzzd]
+
+
+
+
 }
+
+resource "a" has {
+    attribute "b" with ANY of [ffffd],
+
+
+
+
+}
+
+resource "a" has {
+    attribute "b" with ANY of [c,,,,e,d],
+
+
+
+}
+
+
+
+

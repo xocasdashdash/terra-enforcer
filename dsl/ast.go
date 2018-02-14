@@ -31,7 +31,7 @@ type IDStatement struct {
 }
 type WithNode struct {
 	Position
-	condition string
+	Condition string
 }
 type ProgramNode struct {
 	Position
