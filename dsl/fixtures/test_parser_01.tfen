@@ -1,0 +1,41 @@
+resource "a" has {
+    attribute "b" with ANY of [c,,,,e,d],
+    attribute "b" with ANY of [c,,,,e,d],
+    attribute "b" with ANY of [c,,,,e,d],
+    attribute "b" with ANY of [c,,,,e,d],
+    attribute "b" with ANY of [c,,,,e,d]
+
+
+
+
+}
+
+resource "a" has {
+    attribute "b" with ANY of [c,,,,e,d],
+
+
+    attribute "b" with SOME of [zzzd]
+
+
+
+
+}
+
+resource "a" has {
+    attribute "b" with ANY of [ffffd],
+
+
+
+
+}
+
+resource "a" has {
+    attribute "b" with ANY of [c,,,,e,d],
+
+
+
+}
+
+
+
+

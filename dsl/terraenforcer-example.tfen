@@ -1,0 +1,5 @@
+
+
+resource "{{RESOURCE_NAME}}" has {
+    [attribute "{{ATTR_NAME}}" with {{ALL,NONE,SOME,ONLY}} OF ["{{VALUES}}"] ],
+}

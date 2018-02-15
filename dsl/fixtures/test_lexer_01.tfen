@@ -1,0 +1,3 @@
+resource "a" has {
+    attribute "b" with ANY of ["d","d"]
+}
